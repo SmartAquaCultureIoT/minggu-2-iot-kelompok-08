@@ -4,7 +4,7 @@ GPIO Digital/Analog, PWM, DHT22 & Soil Moisture · Sub-CPMK 1.2 · Bobot 2% NA
 
 | | |
 |---|---|
-| Kelompok / Tim | ........................ |
+| Kelompok / Tim | Kelompok 08 |
 | Anggota (NPM) | ........................ |
 | Cabang Git | `feat/lab01-sensor-actuator` |
 | Tanggal praktikum | ........................ |
