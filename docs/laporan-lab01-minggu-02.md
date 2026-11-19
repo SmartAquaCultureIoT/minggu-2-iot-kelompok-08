@@ -203,11 +203,8 @@ Waktu respons terburuk = 15 s + 1 siklus cuplik (≤ 16 s).
 | 3 | Demonstrasi chattering vs histeresis dan PWM kipas | Terverifikasi (Tabel 3.2, C3) |
 | 4 | Fitur C6 berfungsi, kode dan draf laporan di-push | Fitur terverifikasi di simulasi host; **push ke Git dilakukan oleh kelompok** |
 
-## 5. Bukti yang Wajib Anda Lampirkan Sendiri (`docs/img/`)
-- `ss-tabel31-*.png`: Serial Monitor tiap posisi potensiometer
-- `ss-chattering-mode0.png` dan `ss-histeresis-mode1.png`: nilai `relay_switches` setelah 30 detik
-- `ss-pwm-31_5C.png` dan `ss-pwm-35_2C.png`: `fan_pwm_pct` dan kecerahan LED biru
-- `ss-c6-fault.png`: JSON `"fault":"DRY_RUN_PROTECTION"` dan LED merah menyala
+## 5. Lampiran
+
 
 ## 6. Kesimpulan
 Kalibrasi dua titik dengan `analogReadMilliVolts()` dan moving average N = 5 memetakan 0–100% dengan benar.
