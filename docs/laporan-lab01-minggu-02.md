@@ -2,12 +2,12 @@
 **Teknologi Internet of Things (IoT) · Prodi S1 Informatika FT UNIB**
 GPIO Digital/Analog, PWM, DHT22 & Soil Moisture · Sub-CPMK 1.2 · Bobot 2% NA
 
-| | |
-|---|---|
-| Kelompok / Tim | Kelompok 08 |
-| Anggota (NPM) | ........................ |
-| Cabang Git | `feat/lab01-sensor-actuator` |
-| Tanggal praktikum | ........................ |
+| Nama | NIM | Peran |
+|---|---|---|
+| Kenia Nurma Feblia | [G1A023004] | Project Manager & Dashboard Engineer |
+| Primanda Nafissa Alfiansyah | [G1A023044] | Device & Firmware Engineer |
+| Hesi Desta Lestari | [G1A023006] | Back-End & Data Engineer |
+| M. Dimas Al-Shiddiq | [G1A023092] | Security & DevOps Engineer |
 
 > **Catatan keterbukaan data.** Semua angka pada Tabel 3.1–3.2 di bawah dihasilkan dengan menjalankan
 > `firmware/src/main.cpp` apa adanya pada simulator host (`sim/run_tests.sh`) dengan **model ADC ideal**
