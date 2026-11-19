@@ -1,6 +1,7 @@
 # Laporan Praktikum Lab-1 — Minggu ke-2
 
 **Mata Kuliah:** Teknologi Internet of Things (IoT), S1 Informatika, Fakultas Teknik, Universitas Bengkulu
+
 **Proyek:** GPIO Digital/Analog, PWM, DHT22 & Soil Moisture
 
 | Nama | NIM | Peran |
