@@ -1,6 +1,7 @@
 # Laporan Praktikum Lab-1 — Minggu ke-2
-**Teknologi Internet of Things (IoT) · Prodi S1 Informatika FT UNIB**
-GPIO Digital/Analog, PWM, DHT22 & Soil Moisture · Sub-CPMK 1.2 · Bobot 2% NA
+
+**Mata Kuliah:** Teknologi Internet of Things (IoT), S1 Informatika, Fakultas Teknik, Universitas Bengkulu
+**Proyek:** GPIO Digital/Analog, PWM, DHT22 & Soil Moisture
 
 | Nama | NIM | Peran |
 |---|---|---|
