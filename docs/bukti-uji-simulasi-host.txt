@@ -1,0 +1,86 @@
+BUKTI UJI SIMULASI HOST - Lab-1 Minggu 2 (firmware/src/main.cpp dijalankan apa adanya dengan stub Arduino)
+Catatan: ADC dimodelkan ideal (adc_raw = mV x 4095 / 3300). Nilai perangkat keras/Wokwi bisa sedikit berbeda.
+
+=== [E1] Tabel 3.1 (histeresis, pompa dari sisi kering -> basah) ===
+ 10000 ms | {"device_id":"esp32-kopi-gh01","seq":10,"adc_raw":3288,"soil_mv_avg":2650,"soil_pct":0.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":true,"pump_run_s":9,"relay_switches":1,"fan_pwm_pct":20.0,"ctrl_mode":"HYSTERESIS","fault":"NONE"}
+ 20000 ms | {"device_id":"esp32-kopi-gh01","seq":20,"adc_raw":2711,"soil_mv_avg":2185,"soil_pct":30.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":true,"pump_run_s":5,"relay_switches":1,"fan_pwm_pct":20.0,"ctrl_mode":"HYSTERESIS","fault":"NONE"}
+ 30000 ms | {"device_id":"esp32-kopi-gh01","seq":30,"adc_raw":2327,"soil_mv_avg":1875,"soil_pct":50.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":true,"pump_run_s":5,"relay_switches":1,"fan_pwm_pct":20.0,"ctrl_mode":"HYSTERESIS","fault":"NONE"}
+ 40000 ms | {"device_id":"esp32-kopi-gh01","seq":40,"adc_raw":1942,"soil_mv_avg":1565,"soil_pct":70.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":false,"pump_run_s":0,"relay_switches":2,"fan_pwm_pct":20.0,"ctrl_mode":"HYSTERESIS","fault":"NONE"}
+ 50000 ms | {"device_id":"esp32-kopi-gh01","seq":50,"adc_raw":1365,"soil_mv_avg":1100,"soil_pct":100.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":false,"pump_run_s":0,"relay_switches":2,"fan_pwm_pct":20.0,"ctrl_mode":"HYSTERESIS","fault":"NONE"}
+--- titik 50% didekati dari sisi BASAH ---
+ 70000 ms | {"device_id":"esp32-kopi-gh01","seq":70,"adc_raw":2327,"soil_mv_avg":1875,"soil_pct":50.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":false,"pump_run_s":0,"relay_switches":2,"fan_pwm_pct":20.0,"ctrl_mode":"HYSTERESIS","fault":"NONE"}
+
+=== [E3] PWM kipas vs suhu (duty 0-255) ===
+T=26.0 duty=0
+T=28.0 duty=0
+T=30.0 duty=51
+T=31.5 duty=89
+T=33.0 duty=127
+T=35.2 duty=183
+T=36.0 duty=204
+T=38.0 duty=255
+T=40.0 duty=255
+
+=== [E2] Chattering vs histeresis, 30 detik, pengaman C6 dimatikan (PENGAMAN_DRY_RUN=0) ===
+Ambang tunggal 45%, goyang 44-46% bergantian tiap detik : 26 transisi relai
+Ambang tunggal 45%, derau acak +-1% (20 seed)           : min=2 rata-rata=6.0 maks=10
+Histeresis 35-60%, goyang 44-46% bergantian              : 0 transisi relai
+Histeresis 35-60%, derau acak 44-46% (20 seed)           : min=0 rata-rata=0.0 maks=0
+Histeresis 35-60%, goyang 34-36% bergantian              : 1 transisi relai
+Histeresis 35-60%, derau acak 34-36% (20 seed)           : min=1 rata-rata=1.0 maks=1
+
+=== [C6] Dry-run: tandon habis, soil_pct tetap 20% (pengaman aktif) ===
+[C6]      0 ms | {"event":"boot","lab":"Lab-01 Greenhouse Kopi UNIB"}
+[C6]   1000 ms | {"device_id":"esp32-kopi-gh01","seq":1,"adc_raw":2904,"soil_mv_avg":2340,"soil_pct":20.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":true,"pump_run_s":0,"relay_switches":1,"fan_pwm_pct":20.0,"ctrl_mode":"HYSTERESIS","fault":"NONE"}
+[C6]   2000 ms | {"device_id":"esp32-kopi-gh01","seq":2,"adc_raw":2904,"soil_mv_avg":2340,"soil_pct":20.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":true,"pump_run_s":1,"relay_switches":1,"fan_pwm_pct":20.0,"ctrl_mode":"HYSTERESIS","fault":"NONE"}
+[C6]   3000 ms | {"device_id":"esp32-kopi-gh01","seq":3,"adc_raw":2904,"soil_mv_avg":2340,"soil_pct":20.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":true,"pump_run_s":2,"relay_switches":1,"fan_pwm_pct":20.0,"ctrl_mode":"HYSTERESIS","fault":"NONE"}
+[C6]   4000 ms | {"device_id":"esp32-kopi-gh01","seq":4,"adc_raw":2904,"soil_mv_avg":2340,"soil_pct":20.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":true,"pump_run_s":3,"relay_switches":1,"fan_pwm_pct":20.0,"ctrl_mode":"HYSTERESIS","fault":"NONE"}
+[C6]   5000 ms | {"device_id":"esp32-kopi-gh01","seq":5,"adc_raw":2904,"soil_mv_avg":2340,"soil_pct":20.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":true,"pump_run_s":4,"relay_switches":1,"fan_pwm_pct":20.0,"ctrl_mode":"HYSTERESIS","fault":"NONE"}
+[C6]   6000 ms | {"device_id":"esp32-kopi-gh01","seq":6,"adc_raw":2904,"soil_mv_avg":2340,"soil_pct":20.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":true,"pump_run_s":5,"relay_switches":1,"fan_pwm_pct":20.0,"ctrl_mode":"HYSTERESIS","fault":"NONE"}
+[C6]   7000 ms | {"device_id":"esp32-kopi-gh01","seq":7,"adc_raw":2904,"soil_mv_avg":2340,"soil_pct":20.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":true,"pump_run_s":6,"relay_switches":1,"fan_pwm_pct":20.0,"ctrl_mode":"HYSTERESIS","fault":"NONE"}
+[C6]   8000 ms | {"device_id":"esp32-kopi-gh01","seq":8,"adc_raw":2904,"soil_mv_avg":2340,"soil_pct":20.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":true,"pump_run_s":7,"relay_switches":1,"fan_pwm_pct":20.0,"ctrl_mode":"HYSTERESIS","fault":"NONE"}
+[C6]   9000 ms | {"device_id":"esp32-kopi-gh01","seq":9,"adc_raw":2904,"soil_mv_avg":2340,"soil_pct":20.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":true,"pump_run_s":8,"relay_switches":1,"fan_pwm_pct":20.0,"ctrl_mode":"HYSTERESIS","fault":"NONE"}
+[C6]  10000 ms | {"device_id":"esp32-kopi-gh01","seq":10,"adc_raw":2904,"soil_mv_avg":2340,"soil_pct":20.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":true,"pump_run_s":9,"relay_switches":1,"fan_pwm_pct":20.0,"ctrl_mode":"HYSTERESIS","fault":"NONE"}
+[C6]  11000 ms | {"device_id":"esp32-kopi-gh01","seq":11,"adc_raw":2904,"soil_mv_avg":2340,"soil_pct":20.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":true,"pump_run_s":10,"relay_switches":1,"fan_pwm_pct":20.0,"ctrl_mode":"HYSTERESIS","fault":"NONE"}
+[C6]  12000 ms | {"device_id":"esp32-kopi-gh01","seq":12,"adc_raw":2904,"soil_mv_avg":2340,"soil_pct":20.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":true,"pump_run_s":11,"relay_switches":1,"fan_pwm_pct":20.0,"ctrl_mode":"HYSTERESIS","fault":"NONE"}
+[C6]  13000 ms | {"device_id":"esp32-kopi-gh01","seq":13,"adc_raw":2904,"soil_mv_avg":2340,"soil_pct":20.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":true,"pump_run_s":12,"relay_switches":1,"fan_pwm_pct":20.0,"ctrl_mode":"HYSTERESIS","fault":"NONE"}
+[C6]  14000 ms | {"device_id":"esp32-kopi-gh01","seq":14,"adc_raw":2904,"soil_mv_avg":2340,"soil_pct":20.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":true,"pump_run_s":13,"relay_switches":1,"fan_pwm_pct":20.0,"ctrl_mode":"HYSTERESIS","fault":"NONE"}
+[C6]  15000 ms | {"device_id":"esp32-kopi-gh01","seq":15,"adc_raw":2904,"soil_mv_avg":2340,"soil_pct":20.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":true,"pump_run_s":14,"relay_switches":1,"fan_pwm_pct":20.0,"ctrl_mode":"HYSTERESIS","fault":"NONE"}
+[C6]  16000 ms | {"device_id":"esp32-kopi-gh01","seq":16,"adc_raw":2904,"soil_mv_avg":2340,"soil_pct":20.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":true,"pump_run_s":15,"relay_switches":1,"fan_pwm_pct":20.0,"ctrl_mode":"HYSTERESIS","fault":"NONE"}
+[C6]  17000 ms | {"event":"fault","fault":"DRY_RUN_PROTECTION","pump_on":false}
+[C6]  17000 ms | {"device_id":"esp32-kopi-gh01","seq":17,"adc_raw":2904,"soil_mv_avg":2340,"soil_pct":20.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":false,"pump_run_s":0,"relay_switches":2,"fan_pwm_pct":20.0,"ctrl_mode":"FAULT","fault":"DRY_RUN_PROTECTION"}
+[C6]  18000 ms | {"device_id":"esp32-kopi-gh01","seq":18,"adc_raw":2904,"soil_mv_avg":2340,"soil_pct":20.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":false,"pump_run_s":0,"relay_switches":2,"fan_pwm_pct":20.0,"ctrl_mode":"FAULT","fault":"DRY_RUN_PROTECTION"}
+[C6]  19000 ms | {"device_id":"esp32-kopi-gh01","seq":19,"adc_raw":2904,"soil_mv_avg":2340,"soil_pct":20.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":false,"pump_run_s":0,"relay_switches":2,"fan_pwm_pct":20.0,"ctrl_mode":"FAULT","fault":"DRY_RUN_PROTECTION"}
+[C6]  20000 ms | {"device_id":"esp32-kopi-gh01","seq":20,"adc_raw":2904,"soil_mv_avg":2340,"soil_pct":20.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":false,"pump_run_s":0,"relay_switches":2,"fan_pwm_pct":20.0,"ctrl_mode":"FAULT","fault":"DRY_RUN_PROTECTION"}
+[C6]  21000 ms | {"device_id":"esp32-kopi-gh01","seq":21,"adc_raw":2904,"soil_mv_avg":2340,"soil_pct":20.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":false,"pump_run_s":0,"relay_switches":2,"fan_pwm_pct":20.0,"ctrl_mode":"FAULT","fault":"DRY_RUN_PROTECTION"}
+[C6]  22000 ms | {"device_id":"esp32-kopi-gh01","seq":22,"adc_raw":2904,"soil_mv_avg":2340,"soil_pct":20.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":false,"pump_run_s":0,"relay_switches":2,"fan_pwm_pct":20.0,"ctrl_mode":"FAULT","fault":"DRY_RUN_PROTECTION"}
+[C6]  23000 ms | {"device_id":"esp32-kopi-gh01","seq":23,"adc_raw":2904,"soil_mv_avg":2340,"soil_pct":20.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":false,"pump_run_s":0,"relay_switches":2,"fan_pwm_pct":20.0,"ctrl_mode":"FAULT","fault":"DRY_RUN_PROTECTION"}
+[C6]  24000 ms | {"device_id":"esp32-kopi-gh01","seq":24,"adc_raw":2904,"soil_mv_avg":2340,"soil_pct":20.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":false,"pump_run_s":0,"relay_switches":2,"fan_pwm_pct":20.0,"ctrl_mode":"FAULT","fault":"DRY_RUN_PROTECTION"}
+[C6]  25000 ms | {"device_id":"esp32-kopi-gh01","seq":25,"adc_raw":2904,"soil_mv_avg":2340,"soil_pct":20.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":false,"pump_run_s":0,"relay_switches":2,"fan_pwm_pct":20.0,"ctrl_mode":"FAULT","fault":"DRY_RUN_PROTECTION"}
+[C6]  26000 ms | {"device_id":"esp32-kopi-gh01","seq":26,"adc_raw":2904,"soil_mv_avg":2340,"soil_pct":20.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":false,"pump_run_s":0,"relay_switches":2,"fan_pwm_pct":20.0,"ctrl_mode":"FAULT","fault":"DRY_RUN_PROTECTION"}
+[C6]  27000 ms | {"device_id":"esp32-kopi-gh01","seq":27,"adc_raw":2904,"soil_mv_avg":2340,"soil_pct":20.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":false,"pump_run_s":0,"relay_switches":2,"fan_pwm_pct":20.0,"ctrl_mode":"FAULT","fault":"DRY_RUN_PROTECTION"}
+[C6]  28000 ms | {"device_id":"esp32-kopi-gh01","seq":28,"adc_raw":2904,"soil_mv_avg":2340,"soil_pct":20.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":false,"pump_run_s":0,"relay_switches":2,"fan_pwm_pct":20.0,"ctrl_mode":"FAULT","fault":"DRY_RUN_PROTECTION"}
+[C6]  29000 ms | {"device_id":"esp32-kopi-gh01","seq":29,"adc_raw":2904,"soil_mv_avg":2340,"soil_pct":20.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":false,"pump_run_s":0,"relay_switches":2,"fan_pwm_pct":20.0,"ctrl_mode":"FAULT","fault":"DRY_RUN_PROTECTION"}
+[C6]  30000 ms | {"device_id":"esp32-kopi-gh01","seq":30,"adc_raw":2904,"soil_mv_avg":2340,"soil_pct":20.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":false,"pump_run_s":0,"relay_switches":2,"fan_pwm_pct":20.0,"ctrl_mode":"FAULT","fault":"DRY_RUN_PROTECTION"}
+LED merah toggle=52 (fault pertama t=17010 ms), relai=0
+--- uji reset: tahan tombol 3 s ---
+[RST]  31000 ms | {"device_id":"esp32-kopi-gh01","seq":31,"adc_raw":2904,"soil_mv_avg":2340,"soil_pct":20.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":false,"pump_run_s":0,"relay_switches":2,"fan_pwm_pct":20.0,"ctrl_mode":"FAULT","fault":"DRY_RUN_PROTECTION"}
+[RST]  32000 ms | {"device_id":"esp32-kopi-gh01","seq":32,"adc_raw":2904,"soil_mv_avg":2340,"soil_pct":20.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":false,"pump_run_s":0,"relay_switches":2,"fan_pwm_pct":20.0,"ctrl_mode":"FAULT","fault":"DRY_RUN_PROTECTION"}
+[RST]  33000 ms | {"device_id":"esp32-kopi-gh01","seq":33,"adc_raw":2904,"soil_mv_avg":2340,"soil_pct":20.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":false,"pump_run_s":0,"relay_switches":2,"fan_pwm_pct":20.0,"ctrl_mode":"FAULT","fault":"DRY_RUN_PROTECTION"}
+[RST]  33010 ms | {"event":"fault_cleared","fault":"NONE"}
+[RST]  34000 ms | {"device_id":"esp32-kopi-gh01","seq":34,"adc_raw":2327,"soil_mv_avg":2247,"soil_pct":26.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":true,"pump_run_s":0,"relay_switches":3,"fan_pwm_pct":20.0,"ctrl_mode":"HYSTERESIS","fault":"NONE"}
+[RST]  35000 ms | {"device_id":"esp32-kopi-gh01","seq":35,"adc_raw":2327,"soil_mv_avg":2154,"soil_pct":32.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":true,"pump_run_s":0,"relay_switches":3,"fan_pwm_pct":20.0,"ctrl_mode":"HYSTERESIS","fault":"NONE"}
+[RST]  36000 ms | {"device_id":"esp32-kopi-gh01","seq":36,"adc_raw":2327,"soil_mv_avg":2061,"soil_pct":38.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":true,"pump_run_s":0,"relay_switches":3,"fan_pwm_pct":20.0,"ctrl_mode":"HYSTERESIS","fault":"NONE"}
+
+=== [C6] Soil naik 1%/detik saat pompa jalan -> TIDAK boleh fault (cuplikan akhir) ===
+ 41000 ms | {"device_id":"esp32-kopi-gh01","seq":41,"adc_raw":2134,"soil_mv_avg":1751,"soil_pct":58.0,"temp_c":30.0,"air_hum_pct":70.0,"pump_on":true,"pump_run_s":0,"relay_switches":1,"fan_pwm_pct":20.0,"ctrl_mode":"HYSTERESIS","fault":"NONE"}
+
+=== [C6] Override manual + sensor terlepas -> tetap harus fault ===
+[OVR]      0 ms | {"event":"boot","lab":"Lab-01 Greenhouse Kopi UNIB"}
+[OVR]   2010 ms | {"event":"mode_change","manual_override":true}
+[OVR]  19000 ms | {"event":"fault","fault":"DRY_RUN_PROTECTION","pump_on":false}
+
+=== [C6] DHT22 gagal baca -> pengaman pompa tetap bekerja ===
+[DHT]      0 ms | {"event":"boot","lab":"Lab-01 Greenhouse Kopi UNIB"}
+[DHT]  17000 ms | {"event":"fault","fault":"DRY_RUN_PROTECTION","pump_on":false}
+relai=0 fault_led=0

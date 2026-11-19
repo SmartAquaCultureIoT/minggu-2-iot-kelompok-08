@@ -1,0 +1,7 @@
+.pio/
+.vscode/
+*.o
+sim/h0
+sim/h1
+sim/h0n
+sim/h1n
